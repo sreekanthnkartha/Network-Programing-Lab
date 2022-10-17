@@ -1,78 +1,50 @@
-
 #include <stdio.h>
-#include <stdlib.h>
-#define min(x,y) (x<y)?x:y
-
 int main()
 {
-	int outrate,drop=0,bsize,rem=0,nsec;
-	int input[20]={0},i=0,ch,x,flag;
-	
-	printf("Enter Bucket(Bytes) Size : ");
-	scanf("%d",&bsize);
-	printf("Enter output rate(Bytes/sec) : ");
-	scanf("%d",&outrate);
-	
-	do
-	{
-		printf("Enter the size(Bytes) of packet coming at sec %d : ",i+1);	
-		scanf("%d",&input[i]);
-		i++;
-		printf("Enter 1 to continue/ 0 to quit :");
-		scanf("%d",&ch);
-	}while(ch);
-	
-	nsec=i;
-	printf("\nTime Recieved\t Sent \t Dropped \t Remaining\n");
-	for(i=0;i<nsec ||rem ;i++)
-	{	
-		flag=0;
-		printf("%d",i+1);
-		printf(" \t%d",input[i]);
-		if(input[i]+rem>bsize){
-			flag=input[i];
-			printf("\t%3d",min(rem,outrate));
-			if(rem-outrate>0)
-				rem=rem-outrate;
-			else
-				rem=0;
-			printf("%10d%15d\n",flag,rem);
-			continue;
-		}	
-		printf("\t%3d",min(input[i]+rem,outrate));
-		
-		if((x=input[i]+rem-outrate)>0)
-		{
-			if(x>bsize)
-			{
-				rem=bsize;
-				drop=x-bsize;
-			}
-			else
-			{
-				rem=x;
-				drop=0;
-			}
-		}
-		else
-		{
-			drop=0;
-			rem=0;
-		}
-		
-		/*
-		if(flag!=0)
-		{
-			rem -= (flag+outrate);
-			printf("%10d%15d\n",flag,rem);
-			flag=0;
-		}
-
-		else
-				
-		*/
-			printf("%10d%15d\n",drop,rem);
-	}
-	return 0;
+    int b, o, n;
+    printf("Enter the bucket size\n");
+    scanf("%i", &b);
+    printf("Enter the output rate\n");
+    scanf("%i", &o);
+    printf("Enter the number of packets\n");
+    scanf("%i", &n);
+    int size[1000] = {0};
+    int i = 0, loop = n;
+    while (loop--)
+    {
+        printf("Enter the packet size at time %d", i + 1);
+        scanf("%d", &size[i]);
+        i++;
+    }
+    printf("Time\tReceived\tSent\tDropped\tRemaining\n");
+    int rem = 0;
+    for (int i = 0; i < n; i++)
+    {
+        if (rem + size[i] <= b)
+        {
+            rem = rem - o + size[i];
+            printf("%d\t%d\t%d\t%d\t%d\n", i + 1, size[i], o, 0, rem);
+        }
+        else if (i == 0)
+        {
+            rem = rem;
+            printf("%d\t%d\t%d\t%d\t%d\n", i + 1, size[i], 0, size[i], rem);
+        }
+        else
+        {
+            rem = rem - o;
+            printf("%d\t%d\t%d\t%d\t%d\n", i + 1, size[i], o, size[i], rem);
+        }
+    }
+    while (rem > 0)
+    {
+        rem -= o;
+        int sent = o;
+        if (rem < 0)
+        {
+            sent = rem + o;
+            rem = 0;
+        }
+        printf("%d\t%d\t%d\t%d\t%d\n", i + 1, size[i], sent, size[i], rem);
+    }
 }
-
