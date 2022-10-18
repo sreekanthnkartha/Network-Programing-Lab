@@ -7,6 +7,9 @@ unsigned from[20];
 int main()
 {
 int dmat[20][20];
+for(int o =0;o<5;o++){
+    
+}
 int n,i,j,k,count=0;
 printf("\nEnter the number of nodes : ");
 scanf("%d",&n);
