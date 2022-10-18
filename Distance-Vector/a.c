@@ -3,7 +3,7 @@
 int main()
 {
     int n;
-    printf("Enter the number of nodes: ");
+    printf("Enter the number of nodes:\n");
     scanf("%d", &n);
 
     int cost[n][n];
